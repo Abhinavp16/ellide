@@ -28,6 +28,24 @@ const categoryCards = [
   "Soundbuds",
 ];
 
+const categoriesHub = [
+  { icon: "🎧", name: "True Wireless Earbuds" },
+  { icon: "🎵", name: "Neckbands" },
+  { icon: "⌚", name: "Smart Watches" },
+  { icon: "🎧", name: "Wireless Headphones" },
+  { icon: "🔊", name: "Wireless Speakers" },
+  { icon: "📻", name: "Soundbars" },
+  { icon: "📢", name: "Party Speakers" },
+  { icon: "🔋", name: "Power Banks" },
+  { icon: "📹", name: "Dashcams" },
+  { icon: "🎮", name: "Gaming Series" },
+  { icon: "🔌", name: "Chargers and Cables" },
+  { icon: "🎼", name: "Wired Headphones" },
+  { icon: "🎤", name: "Wired Earphones" },
+  { icon: "🛡", name: "Superhero Collection" },
+  { icon: "⭐", name: "Limited Edition" },
+];
+
 const productCards = [
   {
     name: "Eliide 80W Turbo Charger",
@@ -55,25 +73,53 @@ document.querySelector("#app").innerHTML = `
     <header id="navbar" class="navbar">
       <div class="mx-auto flex w-[min(1120px,92vw)] items-center justify-between gap-5 py-4">
         <a href="#" class="brand" aria-label="Eliide home">
-          <img src="/logo.svg" alt="Eliide logo" class="brand-logo" />
+          <span class="brand-mark-wrap">
+            <img src="/logo.svg" alt="Eliide logo mark" class="brand-logo brand-logo-mark" />
+          </span>
+          <span class="brand-text-wrap">
+            <strong class="brand-name">eliide</strong>
+            <span class="brand-tagline">Charging The Best Brand</span>
+          </span>
         </a>
         <nav class="hidden items-center gap-7 text-sm font-semibold md:flex">
-          <a href="#products" class="nav-link">Products</a>
+          <button
+            id="categoriesToggle"
+            type="button"
+            class="nav-link nav-link-btn"
+            aria-expanded="false"
+            aria-controls="categoriesPopup"
+          >
+            Categories
+          </button>
           <a href="#offers" class="nav-link">Offers</a>
           <a href="#about" class="nav-link">About</a>
           <a href="#contact" class="nav-link">Contact</a>
         </nav>
-        <a href="#dealer" class="btn-yellow hidden text-sm md:inline-flex">Become a Dealer</a>
-        <button id="menuToggle" class="menu-btn md:hidden" aria-label="Open mobile menu">
-          <span></span><span></span><span></span>
+        <button type="button" class="login-trigger btn-outline text-sm">
+          <svg viewBox="0 0 24 24" class="login-icon" aria-hidden="true">
+            <circle cx="12" cy="8" r="3.2"></circle>
+            <path d="M5 19c1.6-3 4.2-4.4 7-4.4s5.4 1.4 7 4.4"></path>
+          </svg>
+          <span>Login</span>
         </button>
       </div>
-      <div id="mobileMenu" class="mobile-menu md:hidden">
-        <a href="#products">Products</a>
-        <a href="#offers">Offers</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-        <a href="#dealer" class="btn-yellow mt-2 w-full justify-center">Become a Dealer</a>
+      <div id="categoriesPopup" class="categories-popup" aria-hidden="true">
+        <div class="mx-auto w-[min(1320px,96vw)]">
+          <div class="categories-popup-card">
+            <div class="categories-popup-grid">
+              ${categoriesHub
+                .map(
+                  (item) => `
+                    <article class="category-hub-item">
+                      <span class="category-hub-icon">${item.icon}</span>
+                      <h3>${item.name}</h3>
+                    </article>
+                  `,
+                )
+                .join("")}
+            </div>
+          </div>
+        </div>
       </div>
     </header>
 
@@ -267,21 +313,148 @@ document.querySelector("#app").innerHTML = `
         </div>
       </div>
     </footer>
+
+    <div id="loginModal" class="login-modal" aria-hidden="true">
+      <div class="login-modal-backdrop" data-close-login></div>
+      <div class="login-modal-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+        <button id="loginClose" class="login-close" type="button" aria-label="Close login form">x</button>
+        <div id="loginView" class="auth-view is-active">
+          <p class="eyebrow">Account Access</p>
+          <h3 id="loginTitle">Login to Your Account</h3>
+          <form class="login-modal-form">
+            <input type="text" placeholder="Email or Phone Number" required />
+            <input type="password" placeholder="Password" required />
+            <button type="submit" class="btn-dark w-full">Login</button>
+          </form>
+          <div class="login-divider"><span>OR</span></div>
+          <button type="button" class="social-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.8-5.5 3.8-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.2.8 3.9 1.4l2.7-2.6C17 3.2 14.8 2.2 12 2.2 6.6 2.2 2.2 6.6 2.2 12S6.6 21.8 12 21.8c6.9 0 9.6-4.8 9.6-7.3 0-.5 0-.8-.1-1.2H12z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+          <button type="button" class="social-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M16.8 12.8c0-2.2 1.8-3.2 1.9-3.3-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.8-3.5.8-.8 0-1.9-.8-3.2-.8-1.7 0-3.2 1-4 2.4-1.7 3-.4 7.4 1.2 9.7.8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.8 3-.8s1.8.8 3 .8c1.2 0 2-.9 2.8-2 .9-1.3 1.3-2.6 1.3-2.7 0 0-2-.8-2-3.5zM14.4 6.2c.6-.7 1-1.6.9-2.6-.9 0-2 .6-2.6 1.3-.6.6-1.1 1.6-.9 2.5 1 0 2-.5 2.6-1.2z"/>
+            </svg>
+            <span>Continue with Apple</span>
+          </button>
+          <a href="#" class="forgot-link">Forgot password?</a>
+          <p class="signup-copy">Don't have an account? <button id="showSignup" type="button" class="inline-switch">Sign up</button></p>
+        </div>
+
+        <div id="signupView" class="auth-view">
+          <h3 class="signup-title">Create Account</h3>
+          <p class="signup-sub">Join our community and start your journey today.</p>
+          <form class="signup-form">
+            <label class="signup-label">Full Name</label>
+            <div class="field-wrap">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="3.2"></circle>
+                  <path d="M5 19c1.6-3 4.2-4.4 7-4.4s5.4 1.4 7 4.4"></path>
+                </svg>
+              </span>
+              <input type="text" placeholder="John Doe" required />
+            </div>
+            <label class="signup-label">Email Address</label>
+            <div class="field-wrap">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="4" y="6.5" width="16" height="11" rx="2"></rect>
+                  <path d="M5 8l7 5 7-5"></path>
+                </svg>
+              </span>
+              <input type="email" placeholder="name@company.com" required />
+            </div>
+            <label class="signup-label">Phone Number</label>
+            <div class="field-wrap">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M7.8 4.5h2.6l.9 2.8-1.4 1.4c.8 1.6 2.1 2.9 3.7 3.7l1.4-1.4 2.8.9v2.6c0 .6-.5 1.1-1.1 1.1C10.2 16.6 7.4 13.8 6.7 7.8c0-.6.5-1.1 1.1-1.1z"></path>
+                </svg>
+              </span>
+              <input type="tel" placeholder="+91 98765 43210" required />
+            </div>
+            <label class="signup-label">Password</label>
+            <div class="field-wrap">
+              <span class="field-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="6.3" y="10.2" width="11.4" height="8.3" rx="2"></rect>
+                  <path d="M8.8 10.2V8.4a3.2 3.2 0 016.4 0v1.8"></path>
+                </svg>
+              </span>
+              <input type="password" placeholder="........" required />
+              <span class="field-icon field-icon-right" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2.7 12s3.5-5.2 9.3-5.2 9.3 5.2 9.3 5.2-3.5 5.2-9.3 5.2-9.3-5.2-9.3-5.2z"></path>
+                  <circle cx="12" cy="12" r="2.5"></circle>
+                </svg>
+              </span>
+            </div>
+            <button type="submit" class="signup-btn">Sign Up →</button>
+          </form>
+          <div class="signup-divider"><span>OR CONTINUE WITH</span></div>
+          <div class="signup-social-grid">
+            <button type="button" class="social-btn social-compact">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.8-5.5 3.8-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.2.8 3.9 1.4l2.7-2.6C17 3.2 14.8 2.2 12 2.2 6.6 2.2 2.2 6.6 2.2 12S6.6 21.8 12 21.8c6.9 0 9.6-4.8 9.6-7.3 0-.5 0-.8-.1-1.2H12z"/>
+              </svg>
+              <span>Google</span>
+            </button>
+            <button type="button" class="social-btn social-compact">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M16.8 12.8c0-2.2 1.8-3.2 1.9-3.3-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.2-2.8.8-3.5.8-.8 0-1.9-.8-3.2-.8-1.7 0-3.2 1-4 2.4-1.7 3-.4 7.4 1.2 9.7.8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.8 3-.8s1.8.8 3 .8c1.2 0 2-.9 2.8-2 .9-1.3 1.3-2.6 1.3-2.7 0 0-2-.8-2-3.5zM14.4 6.2c.6-.7 1-1.6.9-2.6-.9 0-2 .6-2.6 1.3-.6.6-1.1 1.6-.9 2.5 1 0 2-.5 2.6-1.2z"/>
+              </svg>
+              <span>Apple</span>
+            </button>
+          </div>
+          <p class="signup-copy mt-3">Already have an account? <button id="showLogin" type="button" class="inline-switch">Login</button></p>
+        </div>
+      </div>
+    </div>
   </div>
 `;
 
 const nav = document.querySelector("#navbar");
-const mobileMenu = document.querySelector("#mobileMenu");
-const menuToggle = document.querySelector("#menuToggle");
 const hero = document.querySelector("#hero");
 const track = document.querySelector("#heroTrack");
 const dotsWrap = document.querySelector("#heroDots");
 const nextButton = document.querySelector("#nextSlide");
 const prevButton = document.querySelector("#prevSlide");
 const slides = [...document.querySelectorAll(".hero-slide")];
+const loginModal = document.querySelector("#loginModal");
+const loginClose = document.querySelector("#loginClose");
+const loginTriggers = [...document.querySelectorAll(".login-trigger")];
+const categoriesToggle = document.querySelector("#categoriesToggle");
+const categoriesPopup = document.querySelector("#categoriesPopup");
+const loginView = document.querySelector("#loginView");
+const signupView = document.querySelector("#signupView");
+const showSignup = document.querySelector("#showSignup");
+const showLogin = document.querySelector("#showLogin");
 
 let activeSlide = 0;
 let autoTimer;
+
+const openLoginModal = () => {
+  loginView.classList.add("is-active");
+  signupView.classList.remove("is-active");
+  loginModal.classList.add("open");
+  loginModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+};
+
+const closeLoginModal = () => {
+  loginModal.classList.remove("open");
+  loginModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+};
+
+const closeCategoriesPopup = () => {
+  categoriesPopup.classList.remove("open");
+  categoriesPopup.setAttribute("aria-hidden", "true");
+  categoriesToggle.setAttribute("aria-expanded", "false");
+};
 
 const renderDots = () => {
   dotsWrap.innerHTML = slides
@@ -324,12 +497,53 @@ dotsWrap.addEventListener("click", (event) => {
   startAutoSlide();
 });
 
-menuToggle.addEventListener("click", () => {
-  mobileMenu.classList.toggle("open");
+loginTriggers.forEach((trigger) => {
+  trigger.addEventListener("click", openLoginModal);
 });
 
-mobileMenu.addEventListener("click", (event) => {
-  if (event.target.matches("a")) mobileMenu.classList.remove("open");
+categoriesToggle.addEventListener("click", (event) => {
+  event.stopPropagation();
+  const opening = !categoriesPopup.classList.contains("open");
+  if (opening) {
+    categoriesPopup.classList.add("open");
+    categoriesPopup.setAttribute("aria-hidden", "false");
+    categoriesToggle.setAttribute("aria-expanded", "true");
+    return;
+  }
+  closeCategoriesPopup();
+});
+
+loginClose.addEventListener("click", closeLoginModal);
+
+loginModal.addEventListener("click", (event) => {
+  if (event.target.matches("[data-close-login]")) closeLoginModal();
+});
+
+categoriesPopup.addEventListener("click", (event) => {
+  event.stopPropagation();
+});
+
+showSignup.addEventListener("click", () => {
+  loginView.classList.remove("is-active");
+  signupView.classList.add("is-active");
+});
+
+showLogin.addEventListener("click", () => {
+  signupView.classList.remove("is-active");
+  loginView.classList.add("is-active");
+});
+
+window.addEventListener("click", () => {
+  if (categoriesPopup.classList.contains("open")) closeCategoriesPopup();
+});
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && loginModal.classList.contains("open")) {
+    closeLoginModal();
+  }
+  if (event.key === "Escape" && categoriesPopup.classList.contains("open")) {
+    closeCategoriesPopup();
+  }
 });
 
 window.addEventListener("scroll", () => {
