@@ -574,6 +574,20 @@ a {
   transform: translateY(0);
 }
 
+@media (max-width: 779px) {
+  .hero-slide {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-media {
+    order: 1;
+  }
+
+  .hero-copy {
+    order: 2;
+  }
+}
 @media (min-width: 780px) {
   .hero-slide {
     grid-template-columns: 1fr 1fr;
@@ -592,3 +606,4 @@ a {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
+
