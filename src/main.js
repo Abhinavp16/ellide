@@ -95,28 +95,37 @@ document.querySelector("#app").innerHTML = `
           <a href="#about" class="nav-link">About</a>
           <a href="#contact" class="nav-link">Contact</a>
         </nav>
-        <button type="button" class="login-trigger btn-outline text-sm">
-          <svg viewBox="0 0 24 24" class="login-icon" aria-hidden="true">
-            <circle cx="12" cy="8" r="3.2"></circle>
-            <path d="M5 19c1.6-3 4.2-4.4 7-4.4s5.4 1.4 7 4.4"></path>
-          </svg>
-          <span>Login</span>
-        </button>
+        <div class="flex items-center gap-4">
+          <div class="search-bar-wrap hidden md:flex">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="7"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="search-input" placeholder='Search "Earphones"' />
+          </div>
+          <button type="button" class="login-trigger btn-outline text-sm">
+            <svg viewBox="0 0 24 24" class="login-icon" aria-hidden="true">
+              <circle cx="12" cy="8" r="3.2"></circle>
+              <path d="M5 19c1.6-3 4.2-4.4 7-4.4s5.4 1.4 7 4.4"></path>
+            </svg>
+            <span>Login</span>
+          </button>
+        </div>
       </div>
       <div id="categoriesPopup" class="categories-popup" aria-hidden="true">
         <div class="mx-auto w-[min(1320px,96vw)]">
           <div class="categories-popup-card">
             <div class="categories-popup-grid">
               ${categoriesHub
-                .map(
-                  (item) => `
+    .map(
+      (item) => `
                     <article class="category-hub-item">
                       <span class="category-hub-icon">${item.icon}</span>
                       <h3>${item.name}</h3>
                     </article>
                   `,
-                )
-                .join("")}
+    )
+    .join("")}
             </div>
           </div>
         </div>
@@ -130,8 +139,8 @@ document.querySelector("#app").innerHTML = `
         <div class="hero-slider-container">
           <div id="heroTrack" class="hero-track">
             ${heroSlides
-              .map(
-                (slide) => `
+    .map(
+      (slide) => `
                   <article class="hero-slide">
                     <div class="hero-copy reveal">
                       <p class="eyebrow">Premium Mobile Accessories</p>
@@ -147,8 +156,8 @@ document.querySelector("#app").innerHTML = `
                     </div>
                   </article>
                 `,
-              )
-              .join("")}
+    )
+    .join("")}
           </div>
         </div>
         <div class="hero-controls">
@@ -165,16 +174,16 @@ document.querySelector("#app").innerHTML = `
         </div>
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           ${categoryCards
-            .map(
-              (category) => `
+    .map(
+      (category) => `
                 <article class="category-card reveal">
                   <h3>${category}</h3>
                   <p>Smart-engineered accessories with reliable high-performance output.</p>
                   <a href="#" class="card-link">View Products -></a>
                 </article>
               `,
-            )
-            .join("")}
+    )
+    .join("")}
         </div>
       </section>
 
@@ -217,8 +226,8 @@ document.querySelector("#app").innerHTML = `
         </div>
         <div class="grid gap-6 lg:grid-cols-3">
           ${productCards
-            .map(
-              (item) => `
+    .map(
+      (item) => `
                 <article class="product-card reveal">
                   <img src="${item.image}" alt="${item.name}" loading="lazy" />
                   <div class="p-6">
@@ -235,8 +244,8 @@ document.querySelector("#app").innerHTML = `
                   </div>
                 </article>
               `,
-            )
-            .join("")}
+    )
+    .join("")}
         </div>
       </section>
 
@@ -567,3 +576,64 @@ document.querySelectorAll(".reveal").forEach((item, index) => {
 
 hero.addEventListener("mouseenter", () => clearInterval(autoTimer));
 hero.addEventListener("mouseleave", startAutoSlide);
+
+// Search Bar Dynamic Placeholder Typing Effect
+const searchInput = document.querySelector(".search-input");
+const searchSuggestions = [
+  "Earphones",
+  "80W Adapters",
+  "Type-C Cables",
+  "Power Banks",
+  "Neckbands",
+  "Smart Watches",
+];
+let currentSuggestion = 0;
+let currentChar = 0;
+let isDeleting = false;
+let typingSpeed = 100;
+
+const typePlaceholder = () => {
+  if (!searchInput) return;
+
+  // Only play animation if user is not actively typing
+  if (searchInput.value.length > 0) return;
+
+  const currentText = searchSuggestions[currentSuggestion];
+
+  if (isDeleting) {
+    searchInput.setAttribute("placeholder", "Search \"" + currentText.substring(0, currentChar - 1) + "\"");
+    currentChar--;
+    typingSpeed = 40; // Faster delete
+  } else {
+    searchInput.setAttribute("placeholder", "Search \"" + currentText.substring(0, currentChar + 1) + "\"");
+    currentChar++;
+    typingSpeed = 80;
+  }
+
+  if (!isDeleting && currentChar === currentText.length) {
+    isDeleting = true;
+    typingSpeed = 2500; // Pause at the end
+  } else if (isDeleting && currentChar === 0) {
+    isDeleting = false;
+    currentSuggestion = (currentSuggestion + 1) % searchSuggestions.length;
+    typingSpeed = 400; // Pause before new word
+  }
+
+  setTimeout(typePlaceholder, typingSpeed);
+};
+
+// Start typing effect
+if (searchInput) {
+  // Clear initial placeholder to avoid jump
+  searchInput.setAttribute("placeholder", "Search \"");
+  setTimeout(typePlaceholder, 800);
+
+  // Restart if input cleared
+  searchInput.addEventListener('input', (e) => {
+    if (e.target.value === '') {
+      isDeleting = false;
+      currentChar = 0;
+      setTimeout(typePlaceholder, 100);
+    }
+  });
+}
